@@ -1,0 +1,23 @@
+language: generic 
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t alexioan/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true alexioan/react-test npm test 
+
+after_success:
+  - docker build -t alexioan/multi-client ./client
+  - docker build -t alexioan/multi-nginx ./nginx
+  - docker build -t alexioan/multi-server ./server
+  - docker build -t alexioan/multi-worker ./worker
+  # Login to docker cli
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Take those images and push them to docker hub
+  - docker push alexioan/multi-client
+  - docker push alexioan/multi-nginx
+  - docker push alexioan/multi-server
+  - docker push alexioan/multi-worker
