@@ -4,20 +4,20 @@ services:
   - docker
 
 before_install:
-  - docker build -t alexioan/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t alexioan87/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true alexioan/react-test npm test 
+  - docker run -e CI=true alexioan87/react-test npm test 
 
 after_success:
-  - docker build -t alexioan/multi-client ./client
-  - docker build -t alexioan/multi-nginx ./nginx
-  - docker build -t alexioan/multi-server ./server
-  - docker build -t alexioan/multi-worker ./worker
+  - docker build -t alexioan87/multi-client ./client
+  - docker build -t alexioan87/multi-nginx ./nginx
+  - docker build -t alexioan87/multi-server ./server
+  - docker build -t alexioan87/multi-worker ./worker
   # Login to docker cli
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push alexioan/multi-client
-  - docker push alexioan/multi-nginx
-  - docker push alexioan/multi-server
-  - docker push alexioan/multi-worker
+  - docker push alexioan87/multi-client
+  - docker push alexioan87/multi-nginx
+  - docker push alexioan87/multi-server
+  - docker push alexioan87/multi-worker
